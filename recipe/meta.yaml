@@ -51,6 +51,7 @@ about:
   license: MIT
   license_family: MIT
   license_file: LICENSE
+  doc_url: https://github.com/thombashi/DataProperty/blob/master/README.rst
   dev_url: https://github.com/thombashi/DataProperty
 
 extra:
