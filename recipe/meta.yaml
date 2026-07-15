@@ -1,30 +1,36 @@
-{% set name = "DataProperty" %}
-{% set version = "0.55.0" %}
-
+{% set name = "dataproperty" %}
+{% set version = "1.1.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 73ccf10f8b123968210438a1a1aa859ea6d5a16b4e1f4d307da7a81b838e79fa
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: a83af82a234edda5378a36fb092bc90dd554646c5e58202a310acf468ae81bc8
 
 build:
   number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
+    - python
     - pip
-    - python >=3.5
-    - setuptools >=38.3.0
+    - setuptools >=64
+    - setuptools_scm >=8
   run:
-    - mbstrdecoder >=1.0.0
-    - python >=3.5
-    - setuptools >=38.3.0
-    - typepy >=1.1.1
+    - python
+    - mbstrdecoder >=1.0.0,<2
+    - typepy >=1.3.2,<3
+    # typepy[datetime] extra — typepy lazy-imports these, so expand the extra
+    # here to keep DataProperty's datetime code paths resolvable at runtime.
+    - python-dateutil >=2.8.0,<3.0.0
+    - pytz >=2018.9
+    - packaging
+  run_constrained:
+    # `logging` extra
+    - loguru >=0.4.1,<1
 
 test:
   imports:
@@ -38,9 +44,15 @@ test:
 about:
   home: https://github.com/thombashi/DataProperty
   summary: Python library for extract property from data.
-  dev_url: https://github.com/thombashi/DataProperty
+  description: |
+    DataProperty is a Python library for extracting properties (data type,
+    alignment, string length, integer/decimal places, etc.) from data values.
+    It underpins pytablewriter and related table-formatting libraries.
   license: MIT
+  license_family: MIT
   license_file: LICENSE
+  doc_url: https://github.com/thombashi/DataProperty/blob/master/README.rst
+  dev_url: https://github.com/thombashi/DataProperty
 
 extra:
   recipe-maintainers:
